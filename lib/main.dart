@@ -39,7 +39,20 @@ class _QuizPageState extends State<QuizPage> {
     "A slug's blood is green."
   ];
 
+  List<bool> answers = [false, true, true];
+
+  Icon correct = Icon(
+    Icons.check_box,
+    color: Colors.green,
+  );
+
+  Icon wrong = Icon(
+    Icons.close,
+    color: Colors.red,
+  );
+
   int questionNumber = 0;
+  int score = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -69,13 +82,20 @@ class _QuizPageState extends State<QuizPage> {
             child: TextButton(
                 onPressed: () {
                   setState(() {
-                    scoreKeeper.add(Icon(
-                      Icons.check_box,
-                      color: Colors.green,
-                    ));
+                    if (answers[questionNumber]) {
+                      scoreKeeper.add(correct);
+                      score++;
+                    } else {
+                      scoreKeeper.add(wrong);
+                    }
                     if (questionNumber < questions.length - 1) {
                       questionNumber++;
-                    } else {}
+                    } else {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ScorePage(score: score)));
+                    }
                   });
                 },
                 style: ButtonStyle(
@@ -97,13 +117,20 @@ class _QuizPageState extends State<QuizPage> {
             child: TextButton(
                 onPressed: () {
                   setState(() {
-                    scoreKeeper.add(Icon(
-                      Icons.close,
-                      color: Colors.red,
-                    ));
+                    if (!answers[questionNumber]) {
+                      scoreKeeper.add(correct);
+                      score++;
+                    } else {
+                      scoreKeeper.add(wrong);
+                    }
                     if (questionNumber < questions.length - 1) {
                       questionNumber++;
-                    } else {}
+                    } else {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ScorePage(score: score)));
+                    }
                   });
                 },
                 style: ButtonStyle(
@@ -124,6 +151,33 @@ class _QuizPageState extends State<QuizPage> {
           children: scoreKeeper,
         )
       ],
+    );
+  }
+}
+
+class ScorePage extends StatelessWidget {
+  const ScorePage({super.key, required this.score});
+
+  final int score;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.teal[300],
+      body: SafeArea(
+        child: Container(
+          child: Center(
+            child: Text(
+              "You Got \n $score / 10",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: Colors.teal[900],
+                fontSize: 60,
+              ),
+            ),
+          ),
+        ),
+      ),
     );
   }
 }
