@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:restart_app/restart_app.dart';
+import 'questions.dart';
 
 void main() {
   runApp(MyApp());
@@ -33,13 +35,19 @@ class QuizPage extends StatefulWidget {
 class _QuizPageState extends State<QuizPage> {
   List<Icon> scoreKeeper = [];
 
-  List<String> questions = [
-    "You can lead a cow upstairs, but not downstairs.",
-    "Approximately one quarter of human bones are in the feet",
-    "A slug's blood is green."
-  ];
+  // List<String> questions = [
+  //   "You can lead a cow upstairs, but not downstairs.",
+  //   "Approximately one quarter of human bones are in the feet",
+  //   "A slug's blood is green."
+  // ];
 
-  List<bool> answers = [false, true, true];
+  // List<bool> answers = [false, true, true];
+
+  List<Question> questionBank = [
+    Question("You can lead a cow upstairs, but not downstairs.", false),
+    Question("Approximately one quarter of human bones are in the feet", true),
+    Question("A slug's blood is green.", true)
+  ];
 
   Icon correct = Icon(
     Icons.check_box,
@@ -66,7 +74,7 @@ class _QuizPageState extends State<QuizPage> {
             child: Padding(
               padding: const EdgeInsets.all(10.0),
               child: Text(
-                questions[questionNumber],
+                questionBank[questionNumber].questionText,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: Colors.white,
@@ -82,13 +90,13 @@ class _QuizPageState extends State<QuizPage> {
             child: TextButton(
                 onPressed: () {
                   setState(() {
-                    if (answers[questionNumber]) {
+                    if (questionBank[questionNumber].questionAnswer) {
                       scoreKeeper.add(correct);
                       score++;
                     } else {
                       scoreKeeper.add(wrong);
                     }
-                    if (questionNumber < questions.length - 1) {
+                    if (questionNumber < questionBank.length - 1) {
                       questionNumber++;
                     } else {
                       Navigator.push(
@@ -117,13 +125,13 @@ class _QuizPageState extends State<QuizPage> {
             child: TextButton(
                 onPressed: () {
                   setState(() {
-                    if (!answers[questionNumber]) {
+                    if (!questionBank[questionNumber].questionAnswer) {
                       scoreKeeper.add(correct);
                       score++;
                     } else {
                       scoreKeeper.add(wrong);
                     }
-                    if (questionNumber < questions.length - 1) {
+                    if (questionNumber < questionBank.length - 1) {
                       questionNumber++;
                     } else {
                       Navigator.push(
@@ -165,9 +173,11 @@ class ScorePage extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.teal[300],
       body: SafeArea(
-        child: Container(
-          child: Center(
-            child: Text(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Text(
               "You Got \n $score / 10",
               textAlign: TextAlign.center,
               style: TextStyle(
@@ -175,7 +185,12 @@ class ScorePage extends StatelessWidget {
                 fontSize: 60,
               ),
             ),
-          ),
+            ElevatedButton(
+                onPressed: () {
+                  Restart.restartApp(notificationTitle: "Restarting App");
+                },
+                child: Icon(Icons.restart_alt_outlined))
+          ],
         ),
       ),
     );
