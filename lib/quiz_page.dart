@@ -12,14 +12,6 @@ class QuizPage extends StatefulWidget {
 class _QuizPageState extends State<QuizPage> {
   List<Icon> scoreKeeper = [];
 
-  // List<String> questions = [
-  //   "You can lead a cow upstairs, but not downstairs.",
-  //   "Approximately one quarter of human bones are in the feet",
-  //   "A slug's blood is green."
-  // ];
-
-  // List<bool> answers = [false, true, true];
-
   List<Question> questionBank = [
     Question("You can lead a cow upstairs, but not downstairs.", false),
     Question("Approximately one quarter of human bones are in the feet", true),

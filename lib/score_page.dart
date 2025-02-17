@@ -27,7 +27,7 @@ class ScorePage extends StatelessWidget {
                 onPressed: () {
                   Restart.restartApp(notificationTitle: "Restarting App");
                 },
-                child: Icon(Icons.restart_alt_outlined))
+                child: Icon(Icons.restart_alt_outlined)),
           ],
         ),
       ),
