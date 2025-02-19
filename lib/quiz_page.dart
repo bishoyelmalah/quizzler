@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'questions.dart';
-import 'score_page.dart';
+import 'quiz_bank.dart';
+
+QuestionBank bank = QuestionBank();
 
 class QuizPage extends StatefulWidget {
   const QuizPage({super.key});
@@ -10,25 +11,6 @@ class QuizPage extends StatefulWidget {
 }
 
 class _QuizPageState extends State<QuizPage> {
-  List<Icon> scoreKeeper = [];
-
-  List<Question> questionBank = [
-    Question("You can lead a cow upstairs, but not downstairs.", false),
-    Question("Approximately one quarter of human bones are in the feet", true),
-    Question("A slug's blood is green.", true)
-  ];
-
-  Icon correct = Icon(
-    Icons.check_box,
-    color: Colors.green,
-  );
-
-  Icon wrong = Icon(
-    Icons.close,
-    color: Colors.red,
-  );
-
-  int questionNumber = 0;
   int score = 0;
 
   @override
@@ -43,7 +25,7 @@ class _QuizPageState extends State<QuizPage> {
             child: Padding(
               padding: const EdgeInsets.all(10.0),
               child: Text(
-                questionBank[questionNumber].questionText,
+                bank.getQuestionText(),
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: Colors.white,
@@ -59,20 +41,8 @@ class _QuizPageState extends State<QuizPage> {
             child: TextButton(
                 onPressed: () {
                   setState(() {
-                    if (questionBank[questionNumber].questionAnswer) {
-                      scoreKeeper.add(correct);
-                      score++;
-                    } else {
-                      scoreKeeper.add(wrong);
-                    }
-                    if (questionNumber < questionBank.length - 1) {
-                      questionNumber++;
-                    } else {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => ScorePage(score: score)));
-                    }
+                    bank.checkAnswer(true);
+                    bank.nextQuestion();
                   });
                 },
                 style: ButtonStyle(
@@ -94,20 +64,8 @@ class _QuizPageState extends State<QuizPage> {
             child: TextButton(
                 onPressed: () {
                   setState(() {
-                    if (!questionBank[questionNumber].questionAnswer) {
-                      scoreKeeper.add(correct);
-                      score++;
-                    } else {
-                      scoreKeeper.add(wrong);
-                    }
-                    if (questionNumber < questionBank.length - 1) {
-                      questionNumber++;
-                    } else {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => ScorePage(score: score)));
-                    }
+                    bank.checkAnswer(false);
+                    bank.nextQuestion();
                   });
                 },
                 style: ButtonStyle(
@@ -125,7 +83,7 @@ class _QuizPageState extends State<QuizPage> {
           ),
         ),
         Row(
-          children: scoreKeeper,
+          children: bank.scoreKeeper.score,
         )
       ],
     );
