@@ -1,5 +1,11 @@
-import 'questions.dart';
 import 'score_keeper.dart';
+
+class Question {
+  late String questionText;
+  late bool questionAnswer;
+
+  Question(this.questionText, this.questionAnswer);
+}
 
 class QuestionBank {
   int _questionNumber = 0;
