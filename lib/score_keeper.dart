@@ -20,4 +20,8 @@ class ScoreKeeper {
   void addWrong() {
     score.add(wrong);
   }
+
+  void resetScore() {
+    score.clear();
+  }
 }

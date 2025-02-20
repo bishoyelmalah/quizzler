@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'quiz_bank.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
 QuestionBank bank = QuestionBank();
 
@@ -11,7 +12,28 @@ class QuizPage extends StatefulWidget {
 }
 
 class _QuizPageState extends State<QuizPage> {
-  int score = 0;
+  void displayMsg() {
+    int userScore = bank.getScore();
+    int maxScore = bank.getBankLength();
+    Alert(
+        context: context,
+        title: "Finished!",
+        desc:
+            "You have reached the end of the quiz.\n\nYou got $userScore / $maxScore",
+        buttons: [
+          DialogButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            width: 120,
+            color: Colors.blue,
+            child: Text(
+              'OK',
+              style: TextStyle(color: Colors.white),
+            ),
+          )
+        ]).show();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,8 +63,13 @@ class _QuizPageState extends State<QuizPage> {
             child: TextButton(
                 onPressed: () {
                   setState(() {
-                    bank.checkAnswer(true);
-                    bank.nextQuestion();
+                    if (bank.isFinished()) {
+                      displayMsg();
+                      bank.reset();
+                    } else {
+                      bank.checkAnswer(true);
+                      bank.nextQuestion();
+                    }
                   });
                 },
                 style: ButtonStyle(
@@ -64,8 +91,13 @@ class _QuizPageState extends State<QuizPage> {
             child: TextButton(
                 onPressed: () {
                   setState(() {
-                    bank.checkAnswer(false);
-                    bank.nextQuestion();
+                    if (bank.isFinished()) {
+                      displayMsg();
+                      bank.reset();
+                    } else {
+                      bank.checkAnswer(false);
+                      bank.nextQuestion();
+                    }
                   });
                 },
                 style: ButtonStyle(
