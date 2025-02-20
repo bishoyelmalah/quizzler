@@ -41,6 +41,10 @@ class _QuizPageState extends State<QuizPage> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: bank.scoreKeeper.score,
+        ),
         Expanded(
           flex: 5,
           child: Center(
@@ -57,65 +61,71 @@ class _QuizPageState extends State<QuizPage> {
             ),
           ),
         ),
-        Expanded(
-          child: Padding(
-            padding: const EdgeInsets.all(15.0),
-            child: TextButton(
-                onPressed: () {
-                  setState(() {
-                    if (bank.isFinished()) {
-                      displayMsg();
-                      bank.reset();
-                    } else {
-                      bank.checkAnswer(true);
-                      bank.nextQuestion();
-                    }
-                  });
-                },
-                style: ButtonStyle(
-                    backgroundColor: WidgetStatePropertyAll(Colors.green),
-                    shape: WidgetStatePropertyAll(RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(0)))),
-                child: Text(
-                  "True",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 20,
-                  ),
-                )),
-          ),
-        ),
-        Expanded(
-          child: Padding(
-            padding: const EdgeInsets.all(15.0),
-            child: TextButton(
-                onPressed: () {
-                  setState(() {
-                    if (bank.isFinished()) {
-                      displayMsg();
-                      bank.reset();
-                    } else {
-                      bank.checkAnswer(false);
-                      bank.nextQuestion();
-                    }
-                  });
-                },
-                style: ButtonStyle(
-                  backgroundColor: WidgetStatePropertyAll(Colors.red),
-                  shape: WidgetStatePropertyAll(RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(0))),
-                ),
-                child: Text(
-                  "False",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 20,
-                  ),
-                )),
-          ),
-        ),
         Row(
-          children: bank.scoreKeeper.score,
+          children: [
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextButton(
+                    onPressed: () {
+                      setState(() {
+                        if (bank.isFinished()) {
+                          displayMsg();
+                          bank.reset();
+                        } else {
+                          bank.checkAnswer(true);
+                          bank.nextQuestion();
+                        }
+                      });
+                    },
+                    style: ButtonStyle(
+                        fixedSize: WidgetStatePropertyAll(Size(100, 100)),
+                        backgroundColor: WidgetStatePropertyAll(Colors.green),
+                        shape: WidgetStatePropertyAll(RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10)))),
+                    child: Text(
+                      "True",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20,
+                      ),
+                    )),
+              ),
+            ),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextButton(
+                    onPressed: () {
+                      setState(() {
+                        if (bank.isFinished()) {
+                          displayMsg();
+                          bank.reset();
+                        } else {
+                          bank.checkAnswer(false);
+                          bank.nextQuestion();
+                        }
+                      });
+                    },
+                    style: ButtonStyle(
+                      fixedSize: WidgetStatePropertyAll(Size(100, 100)),
+                      backgroundColor: WidgetStatePropertyAll(Colors.red),
+                      shape: WidgetStatePropertyAll(RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10))),
+                    ),
+                    child: Text(
+                      "False",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20,
+                      ),
+                    )),
+              ),
+            )
+          ],
+        ),
+        SizedBox(
+          height: 20,
         )
       ],
     );
